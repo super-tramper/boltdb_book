@@ -20,7 +20,7 @@
   [LMDB project][lmdb]. The goal of the project is to provide a simple,
   fast, and reliable database for projects that don't require a full database
   server such as Postgres or MySQL.
-  
+
 >  Since Bolt is meant to be used as such a low-level piece of functionality,
   simplicity is key. The API will be small and only focus on getting values
   and setting values. That's it.
@@ -193,7 +193,7 @@ func main(){
 
 在boltdb中所有的数据都是以page页为单位组织的，那这时候通常我们的理解是，当通过索引定位到具体存储数据在某一页时，然后就现在现在页缓存中找，如果页没有缓存，则打开数据库文件中开始读取那一页的数据就好了。
 但这样的话性能会极低。boltdb中是通过mmap内存映射技术来解决这个问题。当数据库初始化时，就会进行内存映射，将文件中的数据映射到内存中的一段连续空间，后续再读取某一页的数据时，直接在内存中读取。性能大幅度提升。
-  
+
 **2. b+树**  
 
 在boltdb中，索引和数据时按照b+树来组织的。其中一个bucket对象对应一颗b+树，叶子节点存储具体的数据，非叶子节点只存储具体的索引信息，很类似mysql innodb中的主键索引结构。同时值得注意的是所有的bucket也构成了一颗树。但该树不是b+树。
@@ -325,7 +325,7 @@ type meta struct {
 	flags    uint32 //保留值，目前貌似还没用到
 	root     bucket //所有小柜子bucket的根
 	freelist pgid //空闲列表页的id
-	pgid     pgid //元数据页的id
+	pgid     pgid //数据库文件中最大的page id + 1
 	txid     txid //最大的事务id
 	checksum uint64 //用作校验的校验和
 }
